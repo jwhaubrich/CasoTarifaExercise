@@ -1,7 +1,7 @@
-Feature: Rate application interacts with AWS Database
+Feature: Rate Application interacts with AWS Database
 
-  Scenario: Rate application writes and reads final product price from the AWS Database
-  Given the rate application calculated the "final product rate" and stored "date of calculation"
-  And wrote the "final product rate" and "data of calculation" to the AWS Database
-  When the rate application queried AWS Database with "unique product number" for "product information"
-  Then the AWS Database returned with correct "unique product number" and "product information"
+  Scenario: Rate Application writes and reads final product price from the AWS Database
+  Given the Rate Application calculated the final product rate {float} and retrieved current day of calculation {int}
+  And wrote the unique product number {int}, final product rate {float} and date of calculation {int} to the AWS Database
+  When the Rate Application queried AWS Database with unique product number {int} for product information
+  Then the AWS Database returned with correct unique product number {int} and correct product information
