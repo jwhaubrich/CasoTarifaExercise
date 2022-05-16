@@ -2,39 +2,26 @@ Feature: Rate application verifies if discount is available for product
 Background: Rate application receives product information
 
   Scenario: Discount is available for product
-  Given Rate application calls external discount system to check if discount is available
-  When External discount system returns that discount is available
-  Then Total price of product is calculated with discount information
+  Given the rate application sent "unique product number" to the external discount system
+  When the external discount system returned with "product" and "discount information"
+  Then "final product rate" was calculated with "discount information"
 
   Scenario: Discount is not available for product
-  Given Rate application calls external discount system to check if discount is available
-  When External discount system returns that a discount is not available
-  Then Total price of product is calculated with discount information
-
-Feature: Rate application and external database are communicating correctly
-Background: Rate application receives product information
-
-  Scenario: Rate application calls the external discount system and correct product information is returned
-  Given Rate application sends product information to the external discount system
-  When External discount system returns to rate application
-  Then Product information is the desired product
+  Given the rate application sent "unique product number" to the external discount system
+  When the external discount system returned with "product" and "no product discount"
+  Then "final product rate" was calculated without discount
 
 Feature: Product information not found within external discount system when discount should exist
-Background: Rate application receives product information
 
   Scenario: External discount system returns to the rate application that product information cannot be found
-  Given Rate application sends product information to external discount system
-  When External discount system returns product not found
-  Then Rate application returns with cannot be found error
+  Given the rate application sent "unique product number" to external discount system
+  When the external discount system returned with "product not found"
+  Then the rate application displayed "product cannot be found error"
 
-Feature: Rate application interacts with AWS Database correctly
+Feature: Rate application interacts with AWS Database
 
-  Scenario: Rate application writes final product price to AWS Database
-  Given Rate application calculated final product price
-  When Final product price information is sent to by AWS database
-  Then AWS Database stores final product price
-
-  Scenario: AWS Database correctly stores final product price information
-  Given Final product price is stored in the AWS Database
-  When Rate application accesses product information
-  Then Product information that was stored and accessed is the same
+  Scenario: Rate application writes and reads final product price from the AWS Database
+  Given the rate application calculated the "final product rate" and stored "date of calculation"
+  And wrote the "final product rate" and "data of calculation" to the AWS Database
+  When the rate application queried AWS Database with "unique product number" for "product information"
+  Then the AWS Database returned with correct "unique product number" and "product information"
